@@ -17,6 +17,7 @@ var config = struct {
 	SealTokensRaw string `flag:"tokens" default:"" description:"Tokens to try for unsealing the vault instance"`
 	SealTokens    []string
 	VaultInstance string `flag:"instance" env:"VAULT_ADDR" default:"http://127.0.0.1:8200" description:"Vault instance to unlock"`
+	Sleep         int    `flag:"sleep" default:"30" description:"How long to wait between sealed-state checks"`
 }{}
 
 func init() {
@@ -82,7 +83,7 @@ func main() {
 		if config.OneShot {
 			break
 		} else {
-			<-time.After(10 * time.Second)
+			<-time.After(time.Duration(config.Sleep) * time.Second)
 		}
 	}
 }
