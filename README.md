@@ -15,7 +15,7 @@ This small utility is a helper to automatically unlock a [Vault](https://www.vau
 # ./vault-unseal --help
 Usage of ./vault-unseal:
       --instance="http://127.0.0.1:8200": Vault instance to unlock
-  -1, --oneshot[=true]: Only try once and exit after
+  -1, --oneshot[=false]: Only try once and exit after
       --sleep=30: How long to wait between sealed-state checks
       --tokens="": Tokens to try for unsealing the vault instance
 ```

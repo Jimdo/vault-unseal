@@ -13,7 +13,7 @@ import (
 )
 
 var config = struct {
-	OneShot       bool   `flag:"oneshot,1" default:"true" description:"Only try once and exit after"`
+	OneShot       bool   `flag:"oneshot,1" default:"false" description:"Only try once and exit after"`
 	SealTokensRaw string `flag:"tokens" default:"" description:"Tokens to try for unsealing the vault instance"`
 	SealTokens    []string
 	VaultInstance string `flag:"instance" env:"VAULT_ADDR" default:"http://127.0.0.1:8200" description:"Vault instance to unlock"`
