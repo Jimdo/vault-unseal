@@ -3,7 +3,7 @@ package main // import "github.com/Jimdo/vault-unseal"
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -22,12 +22,12 @@ var config = struct {
 
 func init() {
 	if err := rconfig.Parse(&config); err != nil {
-		fmt.Printf("Unable to parse CLI parameters: %s\n", err)
+		log.Printf("Unable to parse CLI parameters: %s\n", err)
 		os.Exit(1)
 	}
 
 	if len(config.SealTokensRaw) == 0 {
-		fmt.Println("You must provide at least one token.")
+		log.Println("You must provide at least one token.")
 		os.Exit(1)
 	}
 
@@ -39,19 +39,19 @@ func main() {
 		s := sealStatus{}
 		r, err := http.Get(config.VaultInstance + "/v1/sys/seal-status")
 		if err != nil {
-			fmt.Printf("An error ocurred while reading seal-status: %s\n", err)
+			log.Printf("An error ocurred while reading seal-status: %s\n", err)
 			os.Exit(1)
 		}
 		defer r.Body.Close()
 
 		if err := json.NewDecoder(r.Body).Decode(&s); err != nil {
-			fmt.Printf("Unable to decode seal-status: %s\n", err)
+			log.Printf("Unable to decode seal-status: %s\n", err)
 			os.Exit(1)
 		}
 
 		if s.Sealed {
 			for _, token := range config.SealTokens {
-				fmt.Printf("Vault instance is sealed (missing %d tokens), trying to unlock...\n", s.T-s.Progress)
+				log.Printf("Vault instance is sealed (missing %d tokens), trying to unlock...\n", s.T-s.Progress)
 				body := bytes.NewBuffer([]byte{})
 				json.NewEncoder(body).Encode(map[string]interface{}{
 					"key": token,
@@ -59,24 +59,24 @@ func main() {
 				r, _ := http.NewRequest("PUT", config.VaultInstance+"/v1/sys/unseal", body)
 				resp, err := http.DefaultClient.Do(r)
 				if err != nil {
-					fmt.Printf("An error ocurred while doing unseal: %s\n", err)
+					log.Printf("An error ocurred while doing unseal: %s\n", err)
 					os.Exit(1)
 				}
 				defer resp.Body.Close()
 
 				if err := json.NewDecoder(resp.Body).Decode(&s); err != nil {
-					fmt.Printf("Unable to decode seal-status: %s\n", err)
+					log.Printf("Unable to decode seal-status: %s\n", err)
 					os.Exit(1)
 				}
 
 				if !s.Sealed {
-					fmt.Printf("Unseal successfully finished.\n")
+					log.Printf("Unseal successfully finished.\n")
 					break
 				}
 			}
 
 			if s.Sealed {
-				fmt.Printf("Vault instance is still sealed (missing %d tokens), I don't have any more tokens.\n", s.T-s.Progress)
+				log.Printf("Vault instance is still sealed (missing %d tokens), I don't have any more tokens.\n", s.T-s.Progress)
 			}
 		}
 
