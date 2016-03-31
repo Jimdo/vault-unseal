@@ -35,9 +35,12 @@ func init() {
 }
 
 func main() {
+	timedClient := http.DefaultClient
+	timedClient.Timeout = 10 * time.Second
+
 	for {
 		s := sealStatus{}
-		r, err := http.Get(config.VaultInstance + "/v1/sys/seal-status")
+		r, err := timedClient.Get(config.VaultInstance + "/v1/sys/seal-status")
 		if err != nil {
 			log.Printf("An error ocurred while reading seal-status: %s\n", err)
 			os.Exit(1)
@@ -57,7 +60,7 @@ func main() {
 					"key": token,
 				})
 				r, _ := http.NewRequest("PUT", config.VaultInstance+"/v1/sys/unseal", body)
-				resp, err := http.DefaultClient.Do(r)
+				resp, err := timedClient.Do(r)
 				if err != nil {
 					log.Printf("An error ocurred while doing unseal: %s\n", err)
 					os.Exit(1)
