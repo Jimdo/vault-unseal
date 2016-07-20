@@ -1,12 +1,12 @@
 {
 	"ImportPath": "github.com/Jimdo/vault-unseal",
 	"GoVersion": "go1.6",
-	"GodepVersion": "v60",
+	"GodepVersion": "v74",
 	"Deps": [
 		{
 			"ImportPath": "github.com/Luzifer/rconfig",
-			"Comment": "v1.0.2",
-			"Rev": "d194dded1e1c7630486e642cacc09400f94f32a2"
+			"Comment": "v1.1.0",
+			"Rev": "c27bd3a64b5b19556914d9fec69922cf3852d585"
 		},
 		{
 			"ImportPath": "github.com/spf13/pflag",
