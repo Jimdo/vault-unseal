@@ -6,18 +6,16 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/Luzifer/rconfig"
 )
 
 var config = struct {
-	OneShot       bool   `flag:"oneshot,1" default:"false" description:"Only try once and exit after"`
-	SealTokensRaw string `flag:"tokens" default:"" description:"Tokens to try for unsealing the vault instance"`
-	SealTokens    []string
-	VaultInstance string `flag:"instance" env:"VAULT_ADDR" default:"http://127.0.0.1:8200" description:"Vault instance to unlock"`
-	Sleep         int    `flag:"sleep" default:"30" description:"How long to wait between sealed-state checks"`
+	OneShot       bool     `flag:"oneshot,1" default:"false" description:"Only try once and exit after"`
+	SealTokens    []string `flag:"tokens" default:"" description:"Tokens to try for unsealing the vault instance"`
+	VaultInstance string   `flag:"instance" env:"VAULT_ADDR" default:"http://127.0.0.1:8200" description:"Vault instance to unlock"`
+	Sleep         int      `flag:"sleep" default:"30" description:"How long to wait between sealed-state checks"`
 }{}
 
 func init() {
@@ -26,12 +24,13 @@ func init() {
 		os.Exit(1)
 	}
 
-	if len(config.SealTokensRaw) == 0 {
-		log.Println("You must provide at least one token.")
-		os.Exit(1)
+	if len(config.SealTokens) == 1 && config.SealTokens[0] == "" {
+		if len(rconfig.Args()) <= 1 {
+			log.Println("You must provide at least one token.")
+			os.Exit(1)
+		}
+		config.SealTokens = rconfig.Args()[1:]
 	}
-
-	config.SealTokens = strings.Split(config.SealTokensRaw, ",")
 }
 
 func main() {
