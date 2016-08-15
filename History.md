@@ -1,3 +1,7 @@
+# 1.1.0 / 2016-08-15
+
+  * Add support for multiple Vault instances
+
 # 1.0.0 / 2016-07-20
 
   * add dockerized version
