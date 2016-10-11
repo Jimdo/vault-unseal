@@ -1,3 +1,7 @@
+# 1.1.1 / 2016-10-11
+
+  * Publish binaries to Github
+
 # 1.1.0 / 2016-08-15
 
   * Add support for multiple Vault instances
