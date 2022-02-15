@@ -18,8 +18,8 @@ fi
 
 set -x
 
-go install github.com/aktau/github-release
-go install github.com/mitchellh/gox
+go install github.com/aktau/github-release@latest
+go install github.com/mitchellh/gox@latest
 
 github-release release --user Jimdo --repo ${REPO} --tag ${VERSION} --name ${VERSION} || true
 
