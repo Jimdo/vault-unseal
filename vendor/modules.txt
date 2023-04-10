@@ -8,7 +8,7 @@ github.com/Luzifer/rconfig
 # github.com/spf13/pflag v0.0.0-20150923202226-b084184666e0
 ## explicit
 github.com/spf13/pflag
-# golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
+# golang.org/x/net v0.9.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
