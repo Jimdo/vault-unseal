@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/Luzifer/rconfig v1.1.0
-	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
+	golang.org/x/net v0.10.0
 )
 
 require (
